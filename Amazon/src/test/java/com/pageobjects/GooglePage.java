@@ -7,10 +7,11 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 
+import com.sun.istack.internal.logging.Logger;
 import com.supportlibrary.GenericFunctions;
 
 public class GooglePage extends GenericFunctions {
-
+	final static Logger logger = Logger.getLogger(GooglePage.class);
 	By SearchTextBox= By.name("q");
     By amazonLink=By.partialLinkText("www.amazon.co.");
     By numofPagesObject=By.xpath("//table[@id='nav']//td//a");
@@ -20,6 +21,7 @@ public class GooglePage extends GenericFunctions {
 
 
 		driver.findElement(SearchTextBox).sendKeys(text);
+		logger.info("Searching for" +text +"in Google page");
 		driver.findElement(SearchTextBox).sendKeys(Keys.RETURN);
 		// driver.findElement(By.xpath("//*[@value='Google Search']")).click();
 
@@ -27,9 +29,11 @@ public class GooglePage extends GenericFunctions {
 
 	public void navigatPages(String filename) throws IOException{
         List<WebElement> numofpages=driver.findElements(numofPagesObject);
-        System.out.println(numofpages);
+        logger.info("Number of pages avaialable : " +numofpages);
+       
 		if(isElementPresent(amazonLink)){
-			click(amazonLink);	   
+			click(amazonLink);
+			logger.info("Clicked on Amazon link");
 		}
 		else{
 
@@ -39,6 +43,7 @@ public class GooglePage extends GenericFunctions {
 
 				if(isElementPresent(amazonLinkToOpen)){
 					click(amazonLinkToOpen);
+					logger.info("Link found in page : "+ i );
 					takeScreenshot(filename+genearteUniquieID());
 
 					break;

@@ -15,7 +15,12 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.pageobjects.AmazonPage;
+import com.pageobjects.IphoneSearch;
+import com.sun.istack.internal.logging.Logger;
+
 public class GenericFunctions {
+	final static Logger logger = Logger.getLogger(GenericFunctions.class);
 	public static WebDriver driver;
 	public boolean isElementPresent(By ele ){
 		
@@ -40,11 +45,12 @@ public class GenericFunctions {
 	
 	public void click(By by){
 		if(isElementPresent(by)){
-			driver.findElement(by).click();
-			System.out.println("successfully clicked");
+			driver.findElement(by).click();			
+			logger.info("successfully clicked");
 		}
 		else{
-			System.out.println("Element is not available to clic");
+			//System.out.println("Element is not available to clic");
+			logger.info("Element is not available to click");
 		}
 		
 		
@@ -58,7 +64,8 @@ public class GenericFunctions {
 			
 		}
 		else{
-			System.out.println("Element is not available to get the text");
+			
+			logger.info("Element is not available to get the text");
 		}
 		return value;
 		
@@ -72,6 +79,9 @@ public class GenericFunctions {
 
 		FileUtils.copyFile(scrFile, new File(System.getProperty("user.dir")+"\\src\\test\\resources\\screenshots\\screenshot"+name+".png"));
 	}
+	/**
+	 * @return unique string
+	 */
 	public String genearteUniquieID(){
 		Date dNow = new Date();
         SimpleDateFormat ft = new SimpleDateFormat("yyMMddhhmmssMs");

@@ -13,10 +13,16 @@ import java.util.Set;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
+import com.sun.istack.internal.logging.Logger;
 import com.supportlibrary.GenericFunctions;
 
+/**
+ * @author Shankar
+ *
+ */
 public class AmazonPage extends GenericFunctions{
 	
+	final static Logger logger = Logger.getLogger(AmazonPage.class);
 	By productTitle =By.id("productTitle");
 	By productPrice= By.xpath("//span[contains(text(),'Price')]/../following-sibling::td[1]/span");
 	By cell_Technology= By.xpath("//span[contains(text(),'Technology')]/../following-sibling::td[1]/span");
@@ -29,6 +35,7 @@ public class AmazonPage extends GenericFunctions{
 	By single_color_Phone=By.xpath("//label[contains(text(),'Colour Name')]/following-sibling::span");
 	
 	Map<String,String> Specifications=new HashMap<String, String>();
+	
 	
 	public void setSpecifications(String model){
 		if(isElementPresent(productTitle)){
@@ -59,7 +66,9 @@ public class AmazonPage extends GenericFunctions{
 		{
 			key = (String)itr.next();
 			value = (String)Specifications.get(key);
-			System.out.println(key + " - "+ value);
+			
+			logger.info("Specifications: " );
+			logger.info(key + " : "+ value );
 		}
 	}
 	
@@ -68,7 +77,7 @@ public class AmazonPage extends GenericFunctions{
 		String priceValue=getText(productPrice).replaceAll("[^0-9.]", "");
 		Double value=Double.parseDouble(priceValue);
 		assertThat(value,is(lessThan(1000.00)));
-		System.out.println(priceValue);
+		logger.info("Price value is: "+ priceValue );
 		
 	}
 	
@@ -76,12 +85,14 @@ public class AmazonPage extends GenericFunctions{
 		
 		if(isElementPresent(productTitle)){
 		   List<WebElement> multiColor= driver.findElements(multicolor_Phone);
-		   System.out.println("Number of different colors available with "+productTitle+ " "+ multiColor.size());
+		   logger.info("Number of different colors available with "+productTitle+ " are "+ multiColor.size());
+		   
 		   for(int i=0;i<=multiColor.size()-1;i++){
 
 			   multiColor.get(i).click();
 			   String selectedColor=driver.findElement(single_color_Phone).getText();
-			   System.out.println("color selected is "+selectedColor);
+			   logger.info("color selected is "+selectedColor );
+			  
 		   }
 		}
 		

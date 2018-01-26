@@ -12,19 +12,22 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.AfterTest;
 
+import com.sun.istack.internal.logging.Logger;
 import com.supportlibrary.GenericFunctions;
 
 public class IphoneSearch extends GenericFunctions{
+	
+	final static Logger logger = Logger.getLogger(IphoneSearch.class);
 	
 	GooglePage googlePage=new GooglePage();
 	AmazonPage amazonPage =new AmazonPage();
 	
   @Test(dataProvider = "readData")
-  public void amazonTest(int n ,String f) throws IOException {
+  public void amazonTest(int n ,String phonemodel) throws IOException {
 	  
-	  googlePage.searchData(f);
-	  googlePage.navigatPages(f);
-	  amazonPage.setSpecifications(f);
+	  googlePage.searchData(phonemodel);
+	  googlePage.navigatPages(phonemodel);
+	  amazonPage.setSpecifications(phonemodel);
 	  amazonPage.getSpecifications();
 	  amazonPage.validatePhoneColors();
 	  amazonPage.verifyPrice();
