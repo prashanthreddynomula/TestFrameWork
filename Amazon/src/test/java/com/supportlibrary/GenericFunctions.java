@@ -15,17 +15,21 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.pageobjects.AmazonPage;
-import com.pageobjects.IphoneSearch;
+//import com.pageobjects.AmazonPage;
 import com.sun.istack.internal.logging.Logger;
+import com.test.ProdcuctSearch;
 
+/**
+ * @author Shankar
+ *
+ */
 public class GenericFunctions {
 	final static Logger logger = Logger.getLogger(GenericFunctions.class);
 	public static WebDriver driver;
-	public boolean isElementPresent(By ele ){
+	public boolean isElementPresent(WebElement element){
 		
 		try{
-			driver.findElement(ele);
+			element.isDisplayed();
 			return true;
 		}
 		catch(Exception e){
@@ -34,6 +38,9 @@ public class GenericFunctions {
 		
 		
 	}
+	/**
+	 * @param element
+	 */
 	public void waitElementPresent(WebElement element){
 		WebDriverWait wait= new WebDriverWait(driver, 30);
 		wait.until(ExpectedConditions.elementToBeClickable(element));
@@ -43,24 +50,31 @@ public class GenericFunctions {
 		
 	}
 	
-	public void click(By by){
-		if(isElementPresent(by)){
-			driver.findElement(by).click();			
+	/**
+	 * @param element
+	 */
+	public void click(WebElement element){
+		if(isElementPresent(element)){
+			element.click();			
 			logger.info("successfully clicked");
 		}
 		else{
-			//System.out.println("Element is not available to clic");
+
 			logger.info("Element is not available to click");
 		}
 		
 		
 	}
 	
-	public String getText(By by){
+	/**
+	 * @param element
+	 * @return
+	 */
+	public String getText(WebElement element){
 		String value=null;
 		
-		if(isElementPresent(by)){
-			value=driver.findElement(by).getText();
+		if(isElementPresent(element)){
+			value=element.getText();
 			
 		}
 		else{
@@ -72,6 +86,10 @@ public class GenericFunctions {
 		
 	}
 	
+	/**
+	 * @param name
+	 * @throws IOException
+	 */
 	public void takeScreenshot(String name) throws IOException{
 		
 		
@@ -81,6 +99,9 @@ public class GenericFunctions {
 	}
 	/**
 	 * @return unique string
+	 */
+	/**
+	 * @return
 	 */
 	public String genearteUniquieID(){
 		Date dNow = new Date();

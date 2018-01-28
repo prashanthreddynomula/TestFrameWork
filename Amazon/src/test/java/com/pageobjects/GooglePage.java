@@ -5,31 +5,63 @@ import java.util.List;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.FindBys;
+import org.openqa.selenium.support.How;
 
 import com.sun.istack.internal.logging.Logger;
 import com.supportlibrary.GenericFunctions;
 
+/**
+ * @author Shankar
+ *
+ */
 public class GooglePage extends GenericFunctions {
 	final static Logger logger = Logger.getLogger(GooglePage.class);
-	By SearchTextBox= By.name("q");
-    By amazonLink=By.partialLinkText("www.amazon.co.");
-    By numofPagesObject=By.xpath("//table[@id='nav']//td//a");
-    By amazonLinkToOpen=By.xpath("//a[contains(@href,'www.amazon.co')]");
+	
+	final WebDriver driver;
+	@FindBy(how = How.NAME, using = "q")
+    private WebElement SearchTextBox;
+	
+	@FindBys( value = { @FindBy(how = How.XPATH, using = "//table[@id='nav']//td//a")})
+    private List<WebElement> numofPagesObject;
+	
+	@FindBy(how = How.XPATH, using = "//a[contains(@href,'www.amazon.co')]")
+    private WebElement amazonLinkToOpen;
+	
+	@FindBy(how = How.PARTIAL_LINK_TEXT, using = "www.amazon.co.")
+    private WebElement amazonLink;
+	
+	
+	/**
+	 * @param driver
+	 */
+	public GooglePage(WebDriver driver)
+	 
+	{
+		this.driver = driver;
+ 	}
     
-	public void searchData(String text) throws IOException {
 
-
-		driver.findElement(SearchTextBox).sendKeys(text);
+	/**
+	 * @param text
+	 * @throws IOException
+	 */
+	public void searchForData(String text) throws IOException {
+	   SearchTextBox.sendKeys(text);
 		logger.info("Searching for" +text +"in Google page");
-		driver.findElement(SearchTextBox).sendKeys(Keys.RETURN);
-		// driver.findElement(By.xpath("//*[@value='Google Search']")).click();
-
+		SearchTextBox.sendKeys(Keys.RETURN);
 	}
 
-	public void navigatPages(String filename) throws IOException{
-        List<WebElement> numofpages=driver.findElements(numofPagesObject);
-        logger.info("Number of pages avaialable : " +numofpages);
+	/**
+	 * @param filename
+	 * @throws IOException
+	 */
+	public void navigatePages(String filename) throws IOException{
+        
+        logger.info("Number of pages avaialable : " +numofPagesObject.size());
        
 		if(isElementPresent(amazonLink)){
 			click(amazonLink);
@@ -37,9 +69,9 @@ public class GooglePage extends GenericFunctions {
 		}
 		else{
 
-			for(int i =2;i<=numofpages.size();i++){
+			for(int i =2;i<=numofPagesObject.size();i++){
 
-				click(By.linkText(i+""));
+				click(numofPagesObject.get(i));
 
 				if(isElementPresent(amazonLinkToOpen)){
 					click(amazonLinkToOpen);

@@ -11,7 +11,11 @@ import java.util.Map;
 import java.util.Set;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.FindBys;
+import org.openqa.selenium.support.How;
 
 import com.sun.istack.internal.logging.Logger;
 import com.supportlibrary.GenericFunctions;
@@ -23,38 +27,77 @@ import com.supportlibrary.GenericFunctions;
 public class AmazonPage extends GenericFunctions{
 	
 	final static Logger logger = Logger.getLogger(AmazonPage.class);
-	By productTitle =By.id("productTitle");
-	By productPrice= By.xpath("//span[contains(text(),'Price')]/../following-sibling::td[1]/span");
-	By cell_Technology= By.xpath("//span[contains(text(),'Technology')]/../following-sibling::td[1]/span");
-	By display_Size=By.xpath("//span[contains(text(),'Display')]/../following-sibling::td[1]/span");
-	By dimensions=By.xpath("//span[contains(text(),'Dimensions')]/../following-sibling::td[1]/span");
-	By weight=By.xpath("//span[contains(text(),'Weight')]/../following-sibling::td[1]/span");
-	By memory_Storage=By.xpath("//span[contains(text(),'Memory')]/../following-sibling::td[1]/span");
-	By operating_System=By.xpath("//span[contains(text(),'Operating System')]/../following-sibling::td[1]/span");
-	By multicolor_Phone=By.xpath("//img[@class='imgSwatch']");
-	By single_color_Phone=By.xpath("//label[contains(text(),'Colour Name')]/following-sibling::span");
+	final WebDriver driver;
+	
+	@FindBy(how = How.ID, using = "productTitle")
+    private WebElement productTitle;
+	
+	@FindBy(how = How.XPATH, using = "//span[contains(text(),'Price')]/../following-sibling::td[1]/span")
+    private WebElement productPrice;
+	
+	@FindBy(how = How.XPATH, using = "//span[contains(text(),'Technology')]/../following-sibling::td[1]/span")
+    private WebElement cell_Technology;
+	
+	@FindBy(how = How.XPATH, using = 
+			"//span[contains(text(),'Display')]/../following-sibling::td[1]/span")
+    private WebElement display_Size;
+	
+	@FindBy(how = How.XPATH, using = "//span[contains(text(),'Dimensions')]/../following-sibling::td[1]/span")
+    private WebElement dimensions;
+	
+	@FindBy(how = How.XPATH, using = "//span[contains(text(),'Weight')]/../following-sibling::td[1]/span")
+    private WebElement weight;
+	
+	@FindBy(how = How.XPATH, using = "//span[contains(text(),'Memory')]/../following-sibling::td[1]/span")
+    private WebElement memory_Storage;
+	
+	@FindBy(how = How.XPATH, using = "//span[contains(text(),'Operating System')]/../following-sibling::td[1]/span")
+    private WebElement operating_System;	
+	
+	@FindBys( value = { @FindBy(how = How.XPATH, using = "//img[@class='imgSwatch']")})
+    private List<WebElement> multicolor_Phone;
+	
+	@FindBy(how = How.XPATH, using = "//label[contains(text(),'Colour Name')]/following-sibling::span")
+    private WebElement single_color_Phone;
+	
+	
+
 	
 	Map<String,String> Specifications=new HashMap<String, String>();
 	
-	
-	public void setSpecifications(String model){
+	/**
+	 * @param driver
+	 */
+	public AmazonPage(WebDriver driver)
+	 
+	{
+ 
+		this.driver = driver;
+ 
+		}
+	/**
+	 * @param model
+	 */
+	public void RetrieveSpecifications(String model){
 		if(isElementPresent(productTitle)){
 			String prodcutName=driver.findElement(By.id("productTitle")).getText();
 			if(prodcutName.toLowerCase().contains(model)){
-				
-
 				Specifications.put("Price", getText(productPrice));
 				Specifications.put("Cell_Technology", getText(cell_Technology));
 				Specifications.put("Display_Size", getText(display_Size));
 				Specifications.put("Dimensions", getText(dimensions));
 				Specifications.put("Weight", getText(weight));
 				Specifications.put("Memory_Storage ", getText(memory_Storage));
-				Specifications.put("Operating_System", getText(operating_System));
-				
+				Specifications.put("Operating_System", getText(operating_System));				
 			}
+			
+			getSpecifications();
 
 		}
 	}
+	/**
+	 * 
+	 */
 	public void getSpecifications()
 	{
 		Set<String> keys = Specifications.keySet();
@@ -62,16 +105,18 @@ public class AmazonPage extends GenericFunctions{
 
 		String key;
 		String value;
+		logger.info("Specifications: " );
 		while(itr.hasNext())
 		{
 			key = (String)itr.next();
-			value = (String)Specifications.get(key);
-			
-			logger.info("Specifications: " );
+			value = (String)Specifications.get(key);				
 			logger.info(key + " : "+ value );
 		}
 	}
 	
+	/**
+	 * 
+	 */
 	public void verifyPrice(){
 		
 		String priceValue=getText(productPrice).replaceAll("[^0-9.]", "");
@@ -81,16 +126,19 @@ public class AmazonPage extends GenericFunctions{
 		
 	}
 	
-	public void validatePhoneColors(){
+	/**
+	 * 
+	 */
+	public void validateProductColors(){
 		
 		if(isElementPresent(productTitle)){
-		   List<WebElement> multiColor= driver.findElements(multicolor_Phone);
-		   logger.info("Number of different colors available with "+productTitle+ " are "+ multiColor.size());
+		   //List<WebElement> multiColor= driver.findElements(multicolor_Phone);
+		   logger.info("Number of different colors available with "+productTitle+ " are "+ multicolor_Phone.size());
 		   
-		   for(int i=0;i<=multiColor.size()-1;i++){
+		   for(int i=0;i<=multicolor_Phone.size()-1;i++){
 
-			   multiColor.get(i).click();
-			   String selectedColor=driver.findElement(single_color_Phone).getText();
+			   multicolor_Phone.get(i).click();
+			   String selectedColor=single_color_Phone.getText();
 			   logger.info("color selected is "+selectedColor );
 			  
 		   }
