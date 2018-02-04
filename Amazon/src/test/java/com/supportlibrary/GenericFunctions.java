@@ -6,18 +6,16 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.apache.commons.io.FileUtils;
-import org.openqa.selenium.By;
+import org.apache.log4j.Logger;
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
-//import com.pageobjects.AmazonPage;
-import com.sun.istack.internal.logging.Logger;
-import com.test.ProdcuctSearch;
 
 /**
  * @author Shankar
@@ -38,6 +36,24 @@ public class GenericFunctions {
 		
 		
 	}
+	
+	
+	
+public boolean isAlertPresent(WebDriver driver){
+		
+		try{
+			 Alert alert =driver.switchTo().alert();
+			 alert.accept();
+			 return true;
+		}
+		catch(NoAlertPresentException e){
+			return false;
+			
+			
+		}
+		
+		
+	}
 	/**
 	 * @param element
 	 */
@@ -45,6 +61,24 @@ public class GenericFunctions {
 		WebDriverWait wait= new WebDriverWait(driver, 30);
 		wait.until(ExpectedConditions.elementToBeClickable(element));
 	}
+	
+	public void waitForElementtoClick(WebElement element){
+		WebDriverWait wait= new WebDriverWait(driver, 30);
+		wait.until(ExpectedConditions.elementToBeClickable(element));
+	}
+	
+	public void waitForElementtoSelect(WebElement element){
+		WebDriverWait wait= new WebDriverWait(driver, 30);
+		wait.until(ExpectedConditions.elementToBeSelected(element));
+	}
+	
+	public void waitForAlert(String time){
+		long timen=Integer.parseInt(time);
+		WebDriverWait wait= new WebDriverWait(driver, timen);
+		wait.until(ExpectedConditions.alertIsPresent());
+	}
+	
+	
 	public void scrollToElement(WebElement element){
 		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
 		
