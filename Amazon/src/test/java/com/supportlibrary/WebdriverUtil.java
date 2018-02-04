@@ -9,6 +9,7 @@ import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.opera.OperaDriver;
+import org.openqa.selenium.phantomjs.PhantomJSDriver;
 
 import com.enums.BrowserType;
 
@@ -76,7 +77,7 @@ public class WebdriverUtil {
     		break;
         case PHANTOMJS : 
         	System.setProperty(PHANTOM_DRIVER_PROPERTY,driverPath);
-        	
+        	driver = new PhantomJSDriver();
     		break;
         
 		default:

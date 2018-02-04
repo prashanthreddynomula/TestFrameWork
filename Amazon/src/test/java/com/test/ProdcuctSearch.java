@@ -50,7 +50,7 @@ public class ProdcuctSearch extends GenericFunctions{
 	 * @param product
 	 * @throws IOException
 	 */
-	@Test(dataProvider = "readData")
+	@Test(dataProvider = "readData",enabled = false)
 	
 	public void amazonTest(String Scenario ,String product) throws IOException {
 

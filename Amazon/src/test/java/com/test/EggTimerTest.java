@@ -14,6 +14,7 @@ import org.testng.annotations.Test;
 import com.pageobjects.EggTimerPage;
 import com.supportlibrary.ExcelAccess;
 import com.supportlibrary.WebdriverUtil;
+import com.utils.extentreport.ExtentTestManager;
 
 public class EggTimerTest {
 	final static Logger logger = Logger.getLogger(EggTimerTest.class);
@@ -45,6 +46,8 @@ public class EggTimerTest {
 	@Test(dataProvider = "testData")
 	
 	public void egggTimerTest(String Scenario ,String time) throws IOException {
+		
+		 ExtentTestManager.getTest().setDescription("Egg Timer Test");
     
 		egggTimerPage.enterData(time);
 		egggTimerPage.verifyUrl(time);
